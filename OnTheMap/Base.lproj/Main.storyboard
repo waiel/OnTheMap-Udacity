@@ -10,10 +10,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Login View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="OnTheMap" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="LoginViewController" customModule="OnTheMap" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="jdc-9O-dwb">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -76,7 +76,7 @@
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </state>
                                                         <connections>
-                                                            <segue destination="tAL-L5-Afx" kind="presentation" id="MIa-Is-o5A"/>
+                                                            <action selector="performLogin:" destination="BYZ-38-t0r" eventType="touchUpInside" id="vX0-uI-a92"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>
@@ -100,6 +100,14 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="4nM-H0-fBV"/>
                     </view>
+                    <connections>
+                        <outlet property="activityIndicator" destination="9qY-y5-9y3" id="7FO-Pv-IZ0"/>
+                        <outlet property="loginButton" destination="9rz-86-fh4" id="aJg-8H-wig"/>
+                        <outlet property="passwordTextField" destination="Xjy-Rk-B67" id="sTd-Bx-a1m"/>
+                        <outlet property="stackView" destination="nGs-Ll-82i" id="G9l-3c-hKS"/>
+                        <outlet property="usernameTextField" destination="GRx-Oo-pmv" id="p7n-zw-RIw"/>
+                        <segue destination="tAL-L5-Afx" kind="presentation" identifier="OnTheMapTabBar" id="Xdy-J1-Myk"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

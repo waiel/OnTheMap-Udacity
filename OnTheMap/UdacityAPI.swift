@@ -20,7 +20,7 @@ class UdacityAPI {
     
     
     //login session
-    static func postLogin(with email:String, password: String, completion: @escaping([String:Any]?, Error?) -> ()){
+    static func postLogin(email: String, password: String, completion: @escaping([String:Any]?, Error?) -> ()){
         var request = URLRequest(url: udacityBaseURL)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -77,7 +77,7 @@ class UdacityAPI {
         request.addValue(ApiKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
        
-        request.httpBody = "{\"uniqueKey\": \"\(user.key!)\", \"firstName\": \"\(user.firstName!)\", \"lastName\": \"\(user.lastName!)\",\"mapString\": \"\(locationName)\", \"mediaURL\": \"\(link)\",\"latitude\": \(locations.latitude), \"longitude\": \(locations.longitude)}".data(using: .utf8)
+        request.httpBody = "{\"uniqueKey\": \"\(user.key)\", \"firstName\": \"\(user.firstName)\", \"lastName\": \"\(user.lastName)\",\"mapString\": \"\(locationName)\", \"mediaURL\": \"\(link)\",\"latitude\": \(locations.latitude), \"longitude\": \(locations.longitude)}".data(using: .utf8)
 
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if error != nil { // Handle error…

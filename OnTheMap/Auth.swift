@@ -8,10 +8,10 @@
 
 import Foundation
 
-struct Auth: Codable {
-     var sessionId : String?
-     var firstName : String?
-     var lastName  : String?
-     var objectId : String?
-     var key : String?
+struct Auth {
+     var sessionId = ""
+     var firstName = ""
+     var lastName  = ""
+     var objectId = ""
+     var key = ""
 }

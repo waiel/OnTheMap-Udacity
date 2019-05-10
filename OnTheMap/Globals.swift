@@ -14,4 +14,6 @@ class Globals {
     
     var studentsLocations: [StudentLocation]?
     
+    var curentStudent: Auth?
+    
 }

@@ -18,10 +18,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var SignupButton: UIButton!
     @IBOutlet weak var signupStackView: UIStackView!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
+   
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         subscribeToKeyboardNotifications()
@@ -40,7 +37,7 @@ class LoginViewController: UIViewController {
         let username = usernameTextField.text!
         let password = passwordTextField.text!
         
-        if(username.isEmpty || password.isEmpty) {
+        if username.isEmpty || password.isEmpty {
             LoadingOverlay.shared.hideOverlayView()
             self.showAlert(title: "Information Required", message: "Email and Password can not be empty!\n Please fill the required fileds to login")
             return

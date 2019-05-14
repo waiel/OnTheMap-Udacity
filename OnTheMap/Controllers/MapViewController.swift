@@ -77,7 +77,7 @@ class  MapViewController: UIViewController  {
                 let coordinate = CLLocationCoordinate2D(latitude: CLLocationDegrees(studentLocation.latitude ?? 0), longitude: CLLocationDegrees(studentLocation.longitude ?? 0))
                 let annotation = MKPointAnnotation()
                 annotation.coordinate = coordinate
-                annotation.title = (studentLocation.firstName)! + " " + (studentLocation.lastName)!
+                annotation.title = (studentLocation.firstName ?? "") + " " + (studentLocation.lastName ?? "")
                 annotation.subtitle = studentLocation.mediaURL ?? ""
                 // add annotation if not added before
                 if !mapView.annotations.contains(where: {$0.title == annotation.title}){

@@ -31,7 +31,7 @@ class ShareLocationViewController: UIViewController {
         annotation.coordinate = self.locationCoordinate
         mapView.addAnnotation(annotation)
         // set the view
-        let viewRegion = MKCoordinateRegion(center: locationCoordinate!, latitudinalMeters: 1000, longitudinalMeters: 1000)
+        let viewRegion = MKCoordinateRegion(center: locationCoordinate!, latitudinalMeters: 200, longitudinalMeters: 200)
         mapView.setRegion(viewRegion, animated: false)
         
     }

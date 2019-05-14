@@ -43,6 +43,7 @@ extension UIViewController {
 
 // MARK: - LoadingOverlay Class
 // a class for showing the animated activity indicator
+// Code credit to Lucho : https://stackoverflow.com/questions/27960556/loading-an-overlay-when-running-long-tasks-in-ios
 public class LoadingOverlay{
     
     var overlayView = UIView()

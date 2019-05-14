@@ -10,25 +10,22 @@ import UIKit
 
 class LoginViewController: UIViewController {
     
-   
+    // MARK: - Variables Defined
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var loginButton: UIButton!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var stackView: UIStackView!
+    @IBOutlet weak var SignupButton: UIButton!
+    @IBOutlet weak var signupStackView: UIStackView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        activityIndicator.hidesWhenStopped = true
-        // Do any additional setup after loading the view.
     }
-    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         subscribeToKeyboardNotifications()
     }
-    
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -36,78 +33,70 @@ class LoginViewController: UIViewController {
     }
 
 
-    
+        // MARK: - Login Action
     @IBAction func performLogin(_ sender: Any) {
-        activityIndicator.isHidden = false
-        activityIndicator.startAnimating()
+        
+        LoadingOverlay.shared.showOverlay(view: UIApplication.shared.keyWindow!)
         let username = usernameTextField.text!
         let password = passwordTextField.text!
         
         if(username.isEmpty || password.isEmpty) {
-            showAlert(title: "Information Required", message: "Email and Password can not be empty!\n Please fill the required fileds to login")
-            activityIndicator.stopAnimating()
+            LoadingOverlay.shared.hideOverlayView()
+            self.showAlert(title: "Information Required", message: "Email and Password can not be empty!\n Please fill the required fileds to login")
             return
         }
         
-        
+        // send login request through API
         UdacityAPI.postLogin(email: username, password: password) { (response, error) in
             
             if let error = error {
-                //self.showAlert(title: "Failed Login", message: error.localizedDescription)
-                print(error.localizedDescription)
-                DispatchQueue.main.async {
-                    self.activityIndicator.stopAnimating()
-                }
+                self.showAlert(title: "Failed Login", message: error.localizedDescription)
+                LoadingOverlay.shared.hideOverlayView()
                 return
             }
-            
-            if let error = response!["error"] as? String {
-               // self.showAlert(title: "Error", message: error)
-                print(error)
-                DispatchQueue.main.async {
-                    self.activityIndicator.stopAnimating()
-                }
-                return
+
+            // if a respond recived with error codes stop
+            if let error = response?["error"] as? String {
+               LoadingOverlay.shared.hideOverlayView()
+               self.showAlert(title: "Error", message: error)
+               return
             }
-            
+
+            // logedin
             if  let session = response?["session"] as? [String:Any],
-                let sessionid = session["id"] as? String
+                let account = response?["account"] as? [String:Any]
             {
-                print(session)
-                print(sessionid)
-                DispatchQueue.main.async {
-                    self.activityIndicator.stopAnimating()
-                     self.performSegue(withIdentifier: "OnTheMapTabBar", sender: self)
+                // store information recived
+                Globals.shared.curentStudent?.sessionId = (session["id"] as? String)!
+                Globals.shared.curentStudent?.key = (account["key"] as? String)!
+                // set a first and last name
+                Globals.shared.curentStudent?.firstName = "Waiel"
+                Globals.shared.curentStudent?.lastName = "Eid"
+                LoadingOverlay.shared.hideOverlayView()
+                    DispatchQueue.main.async {
+                        // show other view controller
+                        self.performSegue(withIdentifier: "performLogin", sender: self)
                 }
                
             }
             
         }
-       
-       activityIndicator.stopAnimating()
         
     }
     
-    
-    func showAlert(title: String, message: String){
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
-    }
-    
-    func prevenUserAcction(action: Bool){
-        DispatchQueue.main.async {
-            self.loginButton.isEnabled = !action
-            self.usernameTextField.isUserInteractionEnabled = !action
-            self.passwordTextField.isUserInteractionEnabled = !action
-            
+    //signup buttton
+    @IBAction func signUp(_ sender: Any) {
+        let app = UIApplication.shared
+        let toOpen = "https://auth.udacity.com/sign-up"
+        guard let url = URL(string: toOpen) else {
+                return
         }
+        app.open(url, options: [:], completionHandler: nil)
     }
-
 }
 
 
-
+    // MARK: - Keyboard Extentions
 extension LoginViewController: UITextFieldDelegate {
     //hide keyboard when return pressed
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -138,7 +127,7 @@ extension LoginViewController: UITextFieldDelegate {
     @objc func keyboardWillShow(_ notification: Notification) {
         //reaise keyboard for text editing
         if usernameTextField.isEditing || passwordTextField.isEditing{
-            let stackSize = self.stackView.frame.maxY;
+            let stackSize = self.stackView.frame.maxY - self.signupStackView.frame.height - 60;
             let keyboardSize = self.view.frame.height - getKeyboardHeight(notification)
             let offset = stackSize - keyboardSize
             
